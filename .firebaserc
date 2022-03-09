@@ -1,0 +1,21 @@
+{
+  "targets": {
+    "mafst-e6efe": {
+      "hosting": {
+        "LaMevaCartera": [
+          "mafst-e6efe"
+        ]
+      }
+    },
+    "lamevacartera": {
+      "hosting": {
+        "LaMevaCartera": [
+          "lamevacartera"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "lamevacartera"
+  }
+}
