@@ -1,1 +1,13 @@
-<p>register works!</p>
+<form [formGroup]="registerForm" (submit)="registrar()">
+  <h1>Registar usuari</h1>
+  <div>
+    <label for="email">Correu electrònic:</label>
+    <input type="email" placeholder="Usuari" [formControl]="email" />
+  </div>
+  <div>
+    <label for="password">Contrasenya usuari:</label>
+    <input type="password" placeholder="Contrasenya" [formControl]="pass" />
+  </div>
+  <div id="button"><button type="submit">Registar</button></div>
+</form>
+<button (click)="goLogin()">Inicia sessió</button>

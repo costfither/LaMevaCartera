@@ -1,19 +1,11 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataAddComponent } from './data-add/data-add.component';
 import { DataListComponent } from './data-list/data-list.component';
-import { DataListItemComponent } from './data-list-item/data-list-item.component';
-
-
-
+import { DataComponent } from './data.component';
 @NgModule({
-  declarations: [
-    DataAddComponent,
-    DataListComponent,
-    DataListItemComponent
-  ],
-  imports: [
-    CommonModule
-  ]
+  declarations: [DataAddComponent, DataListComponent, DataComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
 })
-export class DataModule { }
+export class DataModule {}

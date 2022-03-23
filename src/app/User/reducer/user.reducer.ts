@@ -1,8 +1,15 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import {
-  getUserById,
-  getUserByIdFailure,
-  getUserByIdSuccess,
+  getUser,
+  getUserFailure,
+  getUserSuccess,
+  login,
+  loginFailure,
+  loginGoogle,
+  loginGoogleFailure,
+  loginGoogleSuccess,
+  loginSuccess,
+  logout,
   register,
   registerFailure,
   registerSuccess,
@@ -10,14 +17,14 @@ import {
 import { User } from '../models/user.model';
 
 export interface UserState {
-  user: User;
+  usuario: User | any;
   loading: boolean;
   loaded: boolean;
   error: any;
 }
 
 export const initialState: UserState = {
-  user: new User('', '', '', 0, '', '', ''),
+  usuario: null,
   loading: false,
   loaded: false,
   error: null,
@@ -25,6 +32,25 @@ export const initialState: UserState = {
 
 const _userReducer = createReducer(
   initialState,
+  on(getUser, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(getUserSuccess, (state, action) => ({
+    ...state,
+    usuario: action.user,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(getUserFailure, (state, { payload }) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    error: { payload },
+  })),
   on(register, (state) => ({
     ...state,
     loading: true,
@@ -33,9 +59,9 @@ const _userReducer = createReducer(
   })),
   on(registerSuccess, (state, action) => ({
     ...state,
-    user: action.user,
-    loaded: true,
+    usuario: action.credentials,
     loading: false,
+    loaded: true,
     error: null,
   })),
   on(registerFailure, (state, { payload }) => ({
@@ -44,25 +70,45 @@ const _userReducer = createReducer(
     loaded: false,
     error: { payload },
   })),
-  on(getUserById, (state) => ({
+  on(login, (state) => ({
     ...state,
     loading: true,
     loaded: false,
     error: null,
   })),
-  on(getUserByIdSuccess, (state, action) => ({
+  on(loginSuccess, (state, action) => ({
     ...state,
-    user: action.user,
+    usuario: action.credentials,
     loading: false,
     loaded: true,
     error: null,
   })),
-  on(getUserByIdFailure, (state, { payload }) => ({
+  on(loginFailure, (state, { payload }) => ({
     ...state,
     loading: false,
     loaded: false,
     error: { payload },
-  }))
+  })),
+  on(loginGoogle, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(loginGoogleSuccess, (state, action) => ({
+    ...state,
+    usuario: action.credentials,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(loginGoogleFailure, (state, { payload }) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    error: { payload },
+  })),
+  on(logout, () => initialState)
 );
 
 export function userReducer(

@@ -2,35 +2,39 @@ import { Injectable } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
+  User,
   UserCredential,
 } from '@angular/fire/auth';
+import { authState } from 'rxfire/auth';
+import { from, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private auth: Auth) {}
+  currentUser$ = authState(this.auth);
 
-  async register(email: string, password: string): Promise<UserCredential> {
-    const user = await createUserWithEmailAndPassword(
-      this.auth,
-      email,
-      password
-    );
-    return user;
+  constructor(public auth: Auth) {}
+
+  getUser(): Observable<User | null> {
+    return this.currentUser$;
   }
-  async login(email: string, password: string) {
-    try {
-      const user = await signInWithEmailAndPassword(this.auth, email, password);
-      return user;
-    } catch (e) {
-      return null;
-    }
+  register(email: string, password: string): Observable<UserCredential> {
+    return from(createUserWithEmailAndPassword(this.auth, email, password));
+  }
+  login(email: string, password: string): Observable<UserCredential> {
+    return from(signInWithEmailAndPassword(this.auth, email, password));
+  }
+
+  GoogleAuth(): Observable<UserCredential> {
+    return from(signInWithPopup(this.auth, new GoogleAuthProvider()));
   }
 
   logout() {
-    return signOut(this.auth);
+    return from(signOut(this.auth));
   }
 }

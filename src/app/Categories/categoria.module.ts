@@ -1,19 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CategoriaListComponent } from './categoria-list/categoria-list.component';
-import { CategoriaListItemComponent } from './categoria-list-item/categoria-list-item.component';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoriaAddComponent } from './categoria-add/categoria-add.component';
-
-
+import { CategoriaListComponent } from './categoria-list/categoria-list.component';
+import { CategoriaComponent } from './categoria.component';
 
 @NgModule({
   declarations: [
+    CategoriaComponent,
     CategoriaListComponent,
-    CategoriaListItemComponent,
-    CategoriaAddComponent
+    CategoriaAddComponent,
   ],
-  imports: [
-    CommonModule
-  ]
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
 })
-export class CategoriaModule { }
+export class CategoriaModule {}

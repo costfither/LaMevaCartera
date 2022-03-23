@@ -1,1 +1,37 @@
-<p>data-list works!</p>
+<h2>Llista de data</h2>
+<button (click)="createData()">Afegir transaccio</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>TIPUS</th>
+      <th>DESCRIPTION</th>
+      <th>PUBLICACIÓ</th>
+      <th>CATEGORIES</th>
+      <th>ACTIONS</th>
+      <th>VALOR</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="dataList">
+    <tr *ngFor="let transaccio of dataList">
+      <td>{{ transaccio.idData }}</td>
+      <td *ngIf="transaccio.type">INGRESS</td>
+      <td *ngIf="!transaccio.type">DESPESA</td>
+      <td>{{ transaccio.description }}</td>
+      <td>{{ transaccio.publication_date }}</td>
+
+      <td>
+        <div *ngFor="let category of transaccio.CategoryList">
+          <p *ngIf="category">{{ category.name }}</p>
+        </div>
+      </td>
+      <td>{{ transaccio.value }}€</td>
+
+      <td>
+        <button (click)="updateData(transaccio.id)">UPDATE</button>
+        <button (click)="deleteData(transaccio)">DELETE</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

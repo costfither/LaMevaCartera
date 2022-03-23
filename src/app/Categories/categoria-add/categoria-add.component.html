@@ -1,1 +1,22 @@
-<p>categoria-add works!</p>
+<form [formGroup]="categoryForm" (submit)="saveCategory()">
+  <h1>Afegir categoria</h1>
+  <div>
+    <input type="text" placeholder="Nom de la categoria" [formControl]="name" />
+  </div>
+  <div>
+    <input
+      type="color"
+      placeholder="Color de la categoria"
+      [formControl]="color"
+    />
+  </div>
+  <div>
+    <input
+      type="text"
+      placeholder="Descripció de la categoria"
+      [formControl]="description"
+    />
+  </div>
+  <div id="button"><button type="submit">Afegir</button></div>
+</form>
+<button (click)="goListCategory()">Cancelar</button>

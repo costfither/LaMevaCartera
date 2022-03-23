@@ -1,1 +1,27 @@
-<p>categoria-list works!</p>
+<h2>Llista de categories</h2>
+<button (click)="createCategory()">Afegir categoria</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+      <th>DESCRIPTION</th>
+      <th>COLOR</th>
+      <th>ACTIONS</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="categoryList">
+    <tr *ngFor="let category of categoryList">
+      <td>{{ category.idCategory }}</td>
+      <td>{{ category.name }}</td>
+      <td>{{ category.description }}</td>
+      <td>{{ category.color }}</td>
+
+      <td>
+        <button (click)="updateCategory(category.id)">UPDATE</button>
+        <button (click)="deleteCategory(category.id)">DELETE</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
