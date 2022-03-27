@@ -18,6 +18,8 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
+  passwordHide = true;
+
   user: User = new User('', '', '', 0, '', '', '');
   registerForm: FormGroup;
   email: FormControl;

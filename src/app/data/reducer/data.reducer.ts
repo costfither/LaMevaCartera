@@ -37,12 +37,26 @@ export const initialState: DatasState = {
 
 const _dataReducer = createReducer(
   initialState,
-  on(getDatabyID, (state) => ({
-    ...state,
-    loading: true,
-    loaded: false,
-    error: null,
-  })),
+  on(getDatabyID, (state, action) => {
+    const transaction = state.transactions.find(
+      (value) => value.id === action.idData
+    );
+    if (transaction) {
+      return {
+        ...state,
+        transaction: transaction,
+        loading: true,
+        loaded: false,
+        error: null,
+      };
+    }
+    return {
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    };
+  }),
   on(getDatabyIDSuccess, (state, action) => ({
     ...state,
     transaction: action.transaction,
@@ -132,7 +146,13 @@ const _dataReducer = createReducer(
     loaded: false,
     error: { payload },
   })),
-  on(resetData, () => initialState)
+  on(resetData, (state) => ({
+    ...state,
+    transaction: initialState.transaction,
+    loading: false,
+    loaded: true,
+    error: null,
+  }))
 );
 
 export function dataReducer(

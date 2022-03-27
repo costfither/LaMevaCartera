@@ -1,37 +1,118 @@
 <h2>Llista de data</h2>
-<button (click)="createData()">Afegir transaccio</button>
+<table mat-table [dataSource]="dataList">
+  <!-- type Column -->
+  <ng-container matColumnDef="checkbox">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox
+        color="primary"
+        value="selectAll"
+        (click)="checkAll(selectAll)"
+      ></mat-checkbox>
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+      [ngClass]="{
+        ingress: element.type == true,
+        despessa: element.type != true
+      }"
+    >
+      <mat-checkbox
+        color="primary"
+        value="{{ element.select }}"
+        (click)="checkElement(element)"
+      ></mat-checkbox>
+    </td>
+  </ng-container>
+  <!-- DESCRIPTION Column -->
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef>DESCRIPCIÓ</th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+      [ngClass]="{
+        ingress: element.type == true,
+        despessa: element.type != true
+      }"
+    >
+      {{ element.description }}
+    </td>
+  </ng-container>
+  <!-- PUBLICACIÓ Column -->
+  <ng-container matColumnDef="publication_date">
+    <th mat-header-cell *matHeaderCellDef>DATA</th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+      [ngClass]="{
+        ingress: element.type == true,
+        despessa: element.type != true
+      }"
+    >
+      {{ element.publication_date }}
+    </td>
+  </ng-container>
+  <!-- CATEGORIES Column -->
+  <ng-container matColumnDef="CategoryList">
+    <th mat-header-cell *matHeaderCellDef>CATEGORIES</th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+      [ngClass]="{
+        ingress: element.type == true,
+        despessa: element.type != true
+      }"
+    >
+      <div *ngFor="let category of element.CategoryList">
+        <p *ngIf="category">{{ category.name }}</p>
+      </div>
+    </td>
+  </ng-container>
+  <!-- VALOR Column -->
+  <ng-container matColumnDef="value">
+    <th mat-header-cell *matHeaderCellDef>VALOR</th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+      [ngClass]="{
+        ingress: element.type == true,
+        despessa: element.type != true
+      }"
+    >
+      {{ element.value }}€
+    </td>
+  </ng-container>
+  <!-- ACTIONS Column -->
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>ACCIONS</th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+      [ngClass]="{
+        ingress: element.type == true,
+        despessa: element.type != true
+      }"
+    >
+      <button mat-icon-button (click)="updateData(element.id)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="deleteData(element)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>TIPUS</th>
-      <th>DESCRIPTION</th>
-      <th>PUBLICACIÓ</th>
-      <th>CATEGORIES</th>
-      <th>ACTIONS</th>
-      <th>VALOR</th>
-    </tr>
-  </thead>
-  <tbody *ngIf="dataList">
-    <tr *ngFor="let transaccio of dataList">
-      <td>{{ transaccio.idData }}</td>
-      <td *ngIf="transaccio.type">INGRESS</td>
-      <td *ngIf="!transaccio.type">DESPESA</td>
-      <td>{{ transaccio.description }}</td>
-      <td>{{ transaccio.publication_date }}</td>
-
-      <td>
-        <div *ngFor="let category of transaccio.CategoryList">
-          <p *ngIf="category">{{ category.name }}</p>
-        </div>
-      </td>
-      <td>{{ transaccio.value }}€</td>
-
-      <td>
-        <button (click)="updateData(transaccio.id)">UPDATE</button>
-        <button (click)="deleteData(transaccio)">DELETE</button>
-      </td>
-    </tr>
-  </tbody>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
+<div>
+  <button mat-icon-button (click)="createData()">
+    <mat-icon>add_circle</mat-icon>
+  </button>
+  <button mat-icon-button (click)="deleteSelect(selectData)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
+<button mat-icon-button (click)="loadData()">
+  <mat-icon>settings_backup_restore</mat-icon>
+</button>

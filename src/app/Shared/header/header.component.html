@@ -1,4 +1,4 @@
-<div>
+<mat-toolbar class="background">
   <button mat-icon-button [matMenuTriggerFor]="menu" class="left">
     <mat-icon>more_vert</mat-icon>
   </button>
@@ -16,12 +16,12 @@
       <span>Afegir categoria</span>
     </button>
   </mat-menu>
-  <a class="center">asa</a>
-
+  <span>La meva cartera</span>
+  <span class="example-spacer"></span>
   <button *ngIf="loginUser" mat-icon-button (click)="logout()" class="right">
     <mat-icon>output</mat-icon>
   </button>
   <button *ngIf="!loginUser" mat-icon-button (click)="goLogin()" class="right">
     <mat-icon>input</mat-icon>
   </button>
-</div>
+</mat-toolbar>

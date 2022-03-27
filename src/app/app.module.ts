@@ -6,9 +6,18 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -27,7 +36,6 @@ import { FooterComponent } from './Shared/footer/footer.component';
 import { HeaderComponent } from './Shared/header/header.component';
 import { LoginComponent } from './User/login/login.component';
 import { RegisterComponent } from './User/register/register.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,11 +53,19 @@ import { RegisterComponent } from './User/register/register.component';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    MatIconModule,
-    RouterModule,
+    MatToolbarModule,
     MatButtonToggleModule,
+    MatListModule,
+    RouterModule,
+    MatSelectModule,
     MatInputModule,
+    MatTableModule,
+    MatSlideToggleModule,
+    MatSortModule,
     FormsModule,
+    MatCheckboxModule,
+    MatGridListModule,
+    MatFormFieldModule,
     StoreModule.forRoot(appReducers, {
       runtimeChecks: {
         strictStateImmutability: false,

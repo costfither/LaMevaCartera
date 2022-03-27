@@ -32,11 +32,10 @@ export class DataService {
     idData: string;
     UID: string;
   }): Observable<data[]> {
-    let dataList = this.getDatabyUID({ UID });
-    dataList.subscribe((value) => {
-      return value.find((value) => value.id === idData);
-    });
-    return dataList;
+    const categoriaRef = collection(this.firestore, 'data');
+    const q = query(categoriaRef, where('UID', '==', UID));
+    const result = query(q, where('id', '==', idData));
+    return collectionData(result, { idField: 'id' }) as Observable<data[]>;
   }
 
   //actualizar transaction

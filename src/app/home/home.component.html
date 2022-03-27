@@ -1,10 +1,19 @@
-<div>
-  <div id="ingressos">
+<mat-grid-list cols="2">
+  <mat-grid-tile id="ingressos">
     <h1>Ingressos totals</h1>
-    <button (click)="goLlistaCategoria()">Llista categories</button>
-  </div>
-  <div id="despesses">
+    <mat-list id="list-ingressos"></mat-list>
+    <mat-list-item></mat-list-item>
+  </mat-grid-tile>
+  <mat-grid-tile id="despesses">
     <h1>Despesses totals</h1>
+    <mat-list id="list-despesses">
+      <mat-list-item></mat-list-item>
+    </mat-list>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <button (click)="goLlistaCategoria()">Llista categories</button>
+  </mat-grid-tile>
+  <mat-grid-tile>
     <button (click)="goLlistaDades()">Llista dades</button>
-  </div>
-</div>
+  </mat-grid-tile>
+</mat-grid-list>

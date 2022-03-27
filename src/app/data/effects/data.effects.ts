@@ -19,12 +19,12 @@ export class DataEffects {
       ofType(DataActions.getDatabyUID),
       exhaustMap(({ UID }) =>
         this.dataService.getDatabyUID({ UID }).pipe(
-          map((data) => {
-            return DataActions.getDatabyUIDSuccess({ transactions: data });
-          }),
-          catchError((error) => {
-            return of(DataActions.getDatabyUIDFailure({ payload: error }));
-          })
+          map((data) =>
+            DataActions.getDatabyUIDSuccess({ transactions: data })
+          ),
+          catchError((error) =>
+            of(DataActions.getDatabyUIDFailure({ payload: error }))
+          )
         )
       )
     )
@@ -47,12 +47,12 @@ export class DataEffects {
       ofType(DataActions.getDatabyID),
       exhaustMap(({ idData, UID }) =>
         this.dataService.getDatabyID({ idData, UID }).pipe(
-          map((data) => {
-            return DataActions.getDatabyIDSuccess({ transaction: data[0] });
-          }),
-          catchError((error) => {
-            return of(DataActions.getDatabyIDFailure({ payload: error }));
-          })
+          map((data) =>
+            DataActions.getDatabyIDSuccess({ transaction: data[0] })
+          ),
+          catchError((error) =>
+            of(DataActions.getDatabyIDFailure({ payload: error }))
+          )
         )
       )
     )
@@ -75,15 +75,15 @@ export class DataEffects {
       ofType(DataActions.updateData),
       exhaustMap(({ id, transaction }) =>
         this.dataService.updateData({ id: id, transaction: transaction }).pipe(
-          map(() => {
-            return DataActions.updateDataSuccess({
+          map(() =>
+            DataActions.updateDataSuccess({
               id: id,
               transaction: transaction,
-            });
-          }),
-          catchError((error) => {
-            return of(DataActions.updateDataFailure({ payload: error }));
-          })
+            })
+          ),
+          catchError((error) =>
+            of(DataActions.updateDataFailure({ payload: error }))
+          )
         )
       )
     )
@@ -117,12 +117,10 @@ export class DataEffects {
       ofType(DataActions.createData),
       exhaustMap(({ transaction }) =>
         this.dataService.createData({ transaction: transaction }).pipe(
-          map(() => {
-            return DataActions.createDataSuccess({ transaction });
-          }),
-          catchError((error) => {
-            return of(DataActions.createDataFailure({ payload: error }));
-          })
+          map(() => DataActions.createDataSuccess({ transaction })),
+          catchError((error) =>
+            of(DataActions.createDataFailure({ payload: error }))
+          )
         )
       )
     )
@@ -156,12 +154,12 @@ export class DataEffects {
       ofType(DataActions.deleteData),
       exhaustMap(({ transaction }) =>
         this.dataService.deleteData({ transaction: transaction }).pipe(
-          map(() => {
-            return DataActions.deleteDataSuccess({ transaction: transaction });
-          }),
-          catchError((error) => {
-            return of(DataActions.deleteDataFailure({ payload: error }));
-          })
+          map(() =>
+            DataActions.deleteDataSuccess({ transaction: transaction })
+          ),
+          catchError((error) =>
+            of(DataActions.deleteDataFailure({ payload: error }))
+          )
         )
       )
     )

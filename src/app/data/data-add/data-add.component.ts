@@ -16,6 +16,11 @@ import * as CategoriesAction from '../../Categories/actions';
 import * as DataAction from '../actions';
 import { data } from '../models/data.model';
 
+export interface Food {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-data-add',
   templateUrl: './data-add.component.html',
@@ -40,6 +45,7 @@ export class DataAddComponent implements OnInit {
 
   private userId: string;
   private user: User | null | undefined;
+  userCategoriesIDs: number[] = [];
 
   constructor(
     private router: Router,
@@ -61,13 +67,12 @@ export class DataAddComponent implements OnInit {
     this.description = new FormControl(this.transaccio.description, [
       Validators.required,
     ]);
-    this.type = new FormControl(this.transaccio.type, [Validators.required]);
+    this.type = new FormControl(this.transaccio.type);
     this.value = new FormControl(this.transaccio.value, [Validators.required]);
     this.categories = new FormControl([]);
-    this.publication_date = new FormControl(
-      formatDate(this.transaccio.publication_date, 'yyyy-MM-dd', 'en'),
-      [Validators.required]
-    );
+    this.publication_date = new FormControl(this.transaccio.publication_date, [
+      Validators.required,
+    ]);
 
     this.dataForm = this.formBuilder.group({
       description: this.description,
@@ -76,7 +81,6 @@ export class DataAddComponent implements OnInit {
       CategoryList: this.categories,
       publication_date: this.publication_date,
     });
-
     this.store.select('user').subscribe((user) => {
       this.user = user.usuario;
     });
@@ -88,14 +92,20 @@ export class DataAddComponent implements OnInit {
         this.transaccio = transaccioState.transaction;
         this.transaccionIdData = this.transaccio.idData;
         if (this.transaccio.CategoryList) {
-          let categoriesIDs: number[] = [];
           this.transaccio.CategoryList.forEach((cat: categoria) => {
-            categoriesIDs.push(cat.idCategory);
+            this.userCategoriesIDs.push(cat.idCategory);
           });
-          this.categories.setValue(categoriesIDs);
+          this.categories.setValue(this.userCategoriesIDs);
           this.description.setValue(this.transaccio.description);
-          this.type.setValue(this.transaccio.type);
+          let type;
+          if (this.transaccio.type) {
+            type = 'true';
+          } else {
+            type = 'false';
+          }
+          this.type.setValue(type);
           this.value.setValue(this.transaccio.value);
+          this.publication_date.setValue(this.transaccio.publication_date);
         }
       }
     });
