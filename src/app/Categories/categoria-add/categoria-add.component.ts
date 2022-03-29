@@ -9,10 +9,8 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
-import { UserService } from 'src/app/User/services/user.service';
 import * as CategoriesAction from '../actions';
 import { categoria } from '../models/categoria.model';
-import { CategoriaService } from '../service/categoria.service';
 
 @Component({
   selector: 'app-categoria-add',
@@ -35,8 +33,6 @@ export class CategoriaAddComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private route: Router,
-    private userService: UserService,
-    private categoryService: CategoriaService,
     private formBuilder: FormBuilder,
     private store: Store<AppState>
   ) {
@@ -48,9 +44,7 @@ export class CategoriaAddComponent implements OnInit {
     this.isUpdateMode = false;
 
     this.name = new FormControl(this.categoria.name, [Validators.required]);
-    this.description = new FormControl(this.categoria.description, [
-      Validators.required,
-    ]);
+    this.description = new FormControl(this.categoria.description);
     this.color = new FormControl(this.categoria.color, [Validators.required]);
 
     this.categoryForm = this.formBuilder.group({

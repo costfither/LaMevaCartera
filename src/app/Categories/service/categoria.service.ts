@@ -36,28 +36,12 @@ export class CategoriaService {
 
   updateCategory(id: string, category: categoria): Observable<void> {
     const categoryUpdate = doc(this.firestore, 'category/' + id);
-    return from(
-      setDoc(categoryUpdate, {
-        idCategory: category.idCategory,
-        UID: category.UID,
-        color: category.color,
-        description: category.description,
-        name: category.name,
-      })
-    );
+    return from(setDoc(categoryUpdate, category));
   }
 
   createCategory(category: ICategory): Observable<void> {
     const newCategory = doc(collection(this.firestore, 'category'));
-    return from(
-      setDoc(newCategory, {
-        idCategory: category.idCategory,
-        UID: category.UID,
-        color: category.color,
-        description: category.description,
-        name: category.name,
-      })
-    );
+    return from(setDoc(newCategory, category));
   }
 
   deleteCategory(Category: ICategory): Observable<void> {

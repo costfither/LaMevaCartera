@@ -1,3 +1,8 @@
+import {
+  MAT_COLOR_FORMATS,
+  NgxMatColorPickerModule,
+  NGX_MAT_COLOR_FORMATS,
+} from '@angular-material-components/color-picker';
 import { NgModule } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -7,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
@@ -36,6 +42,7 @@ import { FooterComponent } from './Shared/footer/footer.component';
 import { HeaderComponent } from './Shared/header/header.component';
 import { LoginComponent } from './User/login/login.component';
 import { RegisterComponent } from './User/register/register.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,12 +57,14 @@ import { RegisterComponent } from './User/register/register.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    NgxMatColorPickerModule,
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
     MatToolbarModule,
     MatButtonToggleModule,
     MatListModule,
+    MatDividerModule,
     RouterModule,
     MatSelectModule,
     MatInputModule,
@@ -85,7 +94,7 @@ import { RegisterComponent } from './User/register/register.component';
     CategoriaModule,
     DataModule,
   ],
-  providers: [],
+  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

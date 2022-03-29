@@ -1,19 +1,65 @@
 <mat-grid-list cols="2">
   <mat-grid-tile id="ingressos">
-    <h1>Ingressos totals</h1>
-    <mat-list id="list-ingressos"></mat-list>
-    <mat-list-item></mat-list-item>
+    <div>
+      <h1>Ingressos totals</h1>
+      <p>{{ totalIngres }}</p>
+      <table mat-table [dataSource]="transaccioListIngres">
+        <!-- DESCRIPTION Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>DESCRIPCIÓ</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.description }}
+          </td>
+        </ng-container>
+        <!-- VALOR Column -->
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef>VALOR</th>
+          <td mat-cell *matCellDef="let element">{{ element.value }}€</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
   </mat-grid-tile>
   <mat-grid-tile id="despesses">
-    <h1>Despesses totals</h1>
-    <mat-list id="list-despesses">
-      <mat-list-item></mat-list-item>
-    </mat-list>
+    <div>
+      <h1>Despesses totals</h1>
+      <p>{{ totalDespesa }}</p>
+
+      <table mat-table [dataSource]="transaccioListDespesa">
+        <!-- DESCRIPTION Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>DESCRIPCIÓ</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.description }}
+          </td>
+        </ng-container>
+        <!-- PUBLICACIÓ Column -->
+        <ng-container matColumnDef="publication_date">
+          <th mat-header-cell *matHeaderCellDef>DATA</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.publication_date }}
+          </td>
+        </ng-container>
+        <!-- VALOR Column -->
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef>VALOR</th>
+          <td mat-cell *matCellDef="let element">{{ element.value }}€</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
   </mat-grid-tile>
   <mat-grid-tile>
-    <button (click)="goLlistaCategoria()">Llista categories</button>
+    <button mat-button (click)="goLlistaCategoria()">Llista categories</button>
   </mat-grid-tile>
   <mat-grid-tile>
-    <button (click)="goLlistaDades()">Llista dades</button>
+    <button mat-button (click)="goLlistaDades()">Llista dades</button>
   </mat-grid-tile>
 </mat-grid-list>
+<button mat-icon-button (click)="loadData()">
+  <mat-icon>settings_backup_restore</mat-icon>
+</button>

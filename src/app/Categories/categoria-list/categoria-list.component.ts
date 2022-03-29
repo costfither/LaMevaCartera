@@ -14,9 +14,14 @@ import { categoria } from '../models/categoria.model';
 export class CategoriaListComponent implements OnInit {
   categoryList: categoria[];
   private user: User | null | undefined;
+  displayedColumns: string[] = ['checkbox', 'name', 'description', 'action'];
+  selectCategory: categoria[];
+  selectAll: boolean = false;
 
   constructor(private router: Router, private store: Store<AppState>) {
     this.categoryList = new Array<categoria>();
+    this.selectCategory = new Array<categoria>();
+
     this.store.select('user').subscribe((user) => {
       this.user = user.usuario;
       this.loadCategory();
@@ -36,12 +41,29 @@ export class CategoriaListComponent implements OnInit {
     }
   }
 
+  checkAll(ob: boolean) {
+    if (ob) {
+      this.selectCategory = [...this.categoryList];
+    } else {
+      this.selectCategory = new Array<categoria>();
+    }
+  }
+
+  checkElement(categoria: categoria) {
+    this.selectCategory.push(categoria);
+  }
+
   createCategory(): void {
     this.router.navigateByUrl('category/add');
   }
 
   updateCategory(id: string | undefined): void {
     this.router.navigateByUrl('category/' + id);
+  }
+  deleteSelect(categories: categoria[]) {
+    categories.forEach((categoria) => {
+      this.deleteCategory(categoria.id);
+    });
   }
 
   deleteCategory(id: string | undefined): void {

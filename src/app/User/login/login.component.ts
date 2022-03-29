@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     });
     this.store.select('user').subscribe((user) => {
       if (user.usuario) {
-        this.route.navigateByUrl('');
+        this.route.navigateByUrl('', { skipLocationChange: true });
       }
     });
   }

@@ -32,5 +32,6 @@ import { DataComponent } from './data.component';
     MatTableModule,
     MatCheckboxModule,
   ],
+  providers: [],
 })
 export class DataModule {}

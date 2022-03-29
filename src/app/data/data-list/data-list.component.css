@@ -5,8 +5,12 @@
   background-color: #ffd16f93;
 }
 table {
-  width: 100%;
+  width: 97%;
 }
 tr {
   border: 50px;
+}
+div.listData {
+  display: flex;
+  justify-content: center;
 }

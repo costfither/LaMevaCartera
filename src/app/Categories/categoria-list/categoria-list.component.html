@@ -1,27 +1,77 @@
 <h2>Llista de categories</h2>
-<button (click)="createCategory()">Afegir categoria</button>
-
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>NAME</th>
-      <th>DESCRIPTION</th>
-      <th>COLOR</th>
-      <th>ACTIONS</th>
-    </tr>
-  </thead>
-  <tbody *ngIf="categoryList">
-    <tr *ngFor="let category of categoryList">
-      <td>{{ category.idCategory }}</td>
-      <td>{{ category.name }}</td>
-      <td>{{ category.description }}</td>
-      <td>{{ category.color }}</td>
-
-      <td>
-        <button (click)="updateCategory(category.id)">UPDATE</button>
-        <button (click)="deleteCategory(category.id)">DELETE</button>
+<div class="listData">
+  <table mat-table [dataSource]="categoryList">
+    <!-- checked Column -->
+    <ng-container matColumnDef="checkbox">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          color="primary"
+          value="selectAll"
+          (click)="checkAll(selectAll)"
+        ></mat-checkbox>
+      </th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [style.background-color]="element.color"
+      >
+        <mat-checkbox
+          color="primary"
+          value="{{ element.select }}"
+          (click)="checkElement(element)"
+        ></mat-checkbox>
       </td>
-    </tr>
-  </tbody>
-</table>
+    </ng-container>
+    <!-- NAME Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>NOM</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [style.background-color]="element.color"
+      >
+        {{ element.name }}
+      </td>
+    </ng-container>
+    <!-- DESCRIPTION Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>DESCRIPCIÓ</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [style.background-color]="element.color"
+      >
+        {{ element.description }}
+      </td>
+    </ng-container>
+
+    <!-- ACTIONS Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>ACCIONS</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [style.background-color]="element.color"
+      >
+        <button mat-icon-button (click)="updateCategory(element.id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deleteCategory(element)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
+
+<div>
+  <button mat-icon-button (click)="createCategory()">
+    <mat-icon>add_circle</mat-icon>
+  </button>
+  <button mat-icon-button (click)="deleteSelect(selectCategory)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>

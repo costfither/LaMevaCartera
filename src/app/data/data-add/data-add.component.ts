@@ -97,13 +97,7 @@ export class DataAddComponent implements OnInit {
           });
           this.categories.setValue(this.userCategoriesIDs);
           this.description.setValue(this.transaccio.description);
-          let type;
-          if (this.transaccio.type) {
-            type = 'true';
-          } else {
-            type = 'false';
-          }
-          this.type.setValue(type);
+          this.type.setValue(this.transaccio.type);
           this.value.setValue(this.transaccio.value);
           this.publication_date.setValue(this.transaccio.publication_date);
         }

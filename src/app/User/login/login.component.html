@@ -1,50 +1,47 @@
-<mat-grid-list cols="1">
-  <mat-grid-tile>
-    <form [formGroup]="userForm" (submit)="login()">
-      <h1>Iniciar secció</h1>
-      <div>
-        <mat-form-field class="example-form-field">
-          <mat-label>Correu electrònic</mat-label>
-          <input matInput type="email" [formControl]="email" />
-          <button
-            mat-button
-            *ngIf="email"
-            matSuffix
-            mat-icon-button
-            aria-label="Clear"
-            (click)="(user.email)"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Entrar la teva contrasenya</mat-label>
-          <input
-            matInput
-            [formControl]="pass"
-            [type]="passwordHide ? 'password' : 'text'"
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="passwordHide = !passwordHide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="passwordHide"
-          >
-            <mat-icon>{{
-              passwordHide ? "visibility_off" : "visibility"
-            }}</mat-icon>
-          </button>
-        </mat-form-field>
-      </div>
-      <div id="button">
-        <button mat-raised-button type="submit" (click)="login()">
-          Entrar
+<div class="form">
+  <form [formGroup]="userForm" (submit)="login()">
+    <h1>Iniciar secció</h1>
+    <div>
+      <mat-form-field class="example-form-field">
+        <mat-label>Correu electrònic</mat-label>
+        <input matInput type="email" [formControl]="email" />
+        <button
+          mat-button
+          *ngIf="email"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="(user.email)"
+        >
+          <mat-icon>close</mat-icon>
         </button>
-      </div>
-    </form>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <button mat-raised-button (click)="register()">Registar</button>
-  </mat-grid-tile>
-</mat-grid-list>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Entrar la teva contrasenya</mat-label>
+        <input
+          matInput
+          [formControl]="pass"
+          [type]="passwordHide ? 'password' : 'text'"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="passwordHide = !passwordHide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="passwordHide"
+        >
+          <mat-icon>{{
+            passwordHide ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div id="button">
+      <button mat-raised-button type="submit" (click)="login()">Entrar</button>
+    </div>
+  </form>
+</div>
+<mat-divider></mat-divider>
+<div class="button">
+  <button mat-raised-button (click)="register()">Registar</button>
+</div>

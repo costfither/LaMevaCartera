@@ -17,6 +17,13 @@ export class HomeComponent implements OnInit {
   user: any;
   transaccionList: data[];
   categoryList: categoria[];
+  totalIngres: number = 0;
+  transaccioListIngres: data[];
+  totalDespesa: number = 0;
+  transaccioListDespesa: data[];
+
+  displayedColumns: string[] = ['description', 'value'];
+
   constructor(
     public userService: UserService,
     public router: Router,
@@ -24,8 +31,10 @@ export class HomeComponent implements OnInit {
   ) {
     this.categoryList = new Array<categoria>();
     this.transaccionList = new Array<data>();
-
+    this.transaccioListIngres = new Array<data>();
+    this.transaccioListDespesa = new Array<data>();
     this.store.select('user').subscribe((user) => {
+      this.user = user.usuario.user;
       if (!user.usuario) {
         this.router.navigateByUrl('/login');
       }
@@ -34,8 +43,24 @@ export class HomeComponent implements OnInit {
       this.categoryList = category.categories;
     });
     this.store.select('transaction').subscribe((transaccio) => {
-      this.transaccionList = transaccio.transactions;
+      this.transaccionList = [...transaccio.transactions];
+      this.transaccioListIngres = [
+        ...this.transaccionList.filter((value) => value.type),
+      ];
+      this.transaccioListDespesa = [
+        ...this.transaccionList.filter((value) => !value.type),
+      ];
+      this.totalIngres = 0;
+      this.transaccioListIngres.forEach((value) => {
+        this.totalIngres += value.value;
+      });
+      this.totalDespesa = 0;
+      this.transaccioListDespesa.forEach((value) => {
+        this.totalDespesa += value.value;
+      });
     });
+    this.loadCategories();
+    this.loadData();
   }
 
   loadCategories(): void {
@@ -47,6 +72,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadData(): void {
+    console.log(this.user);
     if (this.user) {
       this.store.dispatch(DataAction.getDatabyUID({ UID: this.user.uid }));
     }

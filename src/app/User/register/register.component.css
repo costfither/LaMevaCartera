@@ -1,0 +1,14 @@
+form {
+  align-items: center;
+  text-align: center;
+}
+div.button {
+  height: 60%;
+  margin: auto;
+  margin-top: 20%;
+}
+div.form {
+  height: 30%;
+  margin: auto;
+  margin-top: 20%;
+}

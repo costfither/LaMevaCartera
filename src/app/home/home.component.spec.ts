@@ -1,5 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { AuthModule } from '@angular/fire/auth';
+import { FirestoreModule } from '@angular/fire/firestore';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
+import { environment } from 'src/environments/environment';
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
@@ -8,9 +14,15 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomeComponent ]
-    })
-    .compileComponents();
+      imports: [
+        RouterTestingModule,
+        StoreModule,
+        provideFirebaseApp(() => initializeApp(environment.firebase)),
+        AuthModule,
+      ],
+      declarations: [HomeComponent],
+      providers: [provideMockStore({}), FirestoreModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +31,8 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('loadData success from subscription', () => {
+    //definimos la dependencia del servicio
     expect(component).toBeTruthy();
   });
 });

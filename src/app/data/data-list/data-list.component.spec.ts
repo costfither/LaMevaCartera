@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { DataListComponent } from './data-list.component';
 
 describe('DataListComponent', () => {
@@ -8,9 +10,10 @@ describe('DataListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DataListComponent ]
-    })
-    .compileComponents();
+      imports: [RouterTestingModule, StoreModule],
+      declarations: [DataListComponent],
+      providers: [provideMockStore({})],
+    }).compileComponents();
   });
 
   beforeEach(() => {

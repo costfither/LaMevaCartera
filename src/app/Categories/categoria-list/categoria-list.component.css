@@ -1,0 +1,10 @@
+table {
+  width: 97%;
+}
+tr {
+  border: 50px;
+}
+div.listData {
+  display: flex;
+  justify-content: center;
+}
