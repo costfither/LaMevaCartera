@@ -23,15 +23,17 @@ export class CategoriaService {
     return collectionData(q, { idField: 'id' }) as Observable<categoria[]>;
   }
 
-  getCategorybyId(idCategory: string, UID: string): Observable<categoria[]> {
-    let categoryList = this.getCategoriesbyUID(UID);
-    categoryList.subscribe((value) => {
-      return value.find((value) => {
-        value.id === idCategory;
-      });
-    });
-
-    return categoryList;
+  getCategorybyId({
+    idCategory,
+    UID,
+  }: {
+    idCategory: string;
+    UID: string;
+  }): Observable<categoria[]> {
+    const categoriaRef = collection(this.firestore, 'category');
+    const q = query(categoriaRef, where('UID', '==', UID));
+    const result = query(q, where('id', '==', idCategory));
+    return collectionData(result, { idField: 'id' }) as Observable<categoria[]>;
   }
 
   updateCategory(id: string, category: categoria): Observable<void> {

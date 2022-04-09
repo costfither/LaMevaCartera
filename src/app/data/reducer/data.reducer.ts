@@ -29,7 +29,7 @@ export interface DatasState {
 
 export const initialState: DatasState = {
   transactions: new Array<data>(),
-  transaction: new data('', '', [], 0, false, '', new Date()),
+  transaction: new data(),
   loading: false,
   loaded: false,
   error: null,

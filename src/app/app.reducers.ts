@@ -7,15 +7,15 @@ import { UserEffects } from './User/effects';
 import * as userReducer from './User/reducer';
 
 export interface AppState {
-  transaction: dataReducer.DatasState;
-  user: userReducer.UserState;
-  category: categoryReducer.CategoriesState;
+  transactionState: dataReducer.DatasState;
+  userState: userReducer.UserState;
+  categoryState: categoryReducer.CategoriesState;
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
-  transaction: dataReducer.dataReducer,
-  user: userReducer.userReducer,
-  category: categoryReducer.categoryReducer,
+  transactionState: dataReducer.dataReducer,
+  userState: userReducer.userReducer,
+  categoryState: categoryReducer.categoryReducer,
 };
 
 export const EffectsArray: any[] = [

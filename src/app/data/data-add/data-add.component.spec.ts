@@ -1,18 +1,25 @@
-import { CUSTOM_ELEMENTS_SCHEMA, forwardRef } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, forwardRef, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { AuthModule } from '@angular/fire/auth';
-import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { environment } from 'src/environments/environment';
+import * as CategoryReducer from '../../Categories/reducer';
+import * as UserReducer from '../../User/reducer';
+import * as DataReducer from '../reducer';
 import { DataAddComponent } from './data-add.component';
 
 describe('DataAddComponent', () => {
   let component: DataAddComponent;
   let fixture: ComponentFixture<DataAddComponent>;
+  let store: Store<DataReducer.DatasState>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -21,12 +28,18 @@ describe('DataAddComponent', () => {
         ReactiveFormsModule,
         provideFirebaseApp(() => initializeApp(environment.firebase)),
         AuthModule,
-        StoreModule,
+        StoreModule.forRoot({
+          transaction: combineReducers(DataReducer.dataReducer),
+          category: combineReducers(CategoryReducer.categoryReducer),
+          user: combineReducers(UserReducer.userReducer),
+        }),
       ],
       declarations: [DataAddComponent],
       providers: [
         RouterModule,
-        provideMockStore({}),
+        FormsModule,
+        NgModule,
+        { provider: Store },
         {
           provide: NG_VALUE_ACCESSOR,
           useExisting: forwardRef(() => DataAddComponent), // replace name as appropriate
@@ -35,6 +48,9 @@ describe('DataAddComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
+    store = TestBed.get(Store);
+
+    spyOn(store, 'dispatch').and.callThrough();
   });
 
   beforeEach(() => {

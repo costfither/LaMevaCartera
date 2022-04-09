@@ -3,9 +3,13 @@
 
 <form *ngIf="dataForm" [formGroup]="dataForm" (ngSubmit)="saveData()">
   <div id="type">
-    <mat-button-toggle-group [formControl]="type" aria-label="Font Style">
-      <mat-button-toggle value="true">INGRESSOS</mat-button-toggle>
-      <mat-button-toggle value="false">DESPESSES</mat-button-toggle>
+    <mat-button-toggle-group
+      [formControl]="type"
+      aria-label="Font Style"
+      value="type"
+    >
+      <mat-button-toggle [value]="true">INGRESSOS</mat-button-toggle>
+      <mat-button-toggle [value]="false">DESPESSES</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 
@@ -25,23 +29,11 @@
         [formControl]="publication_date"
       />
     </mat-form-field>
-    <div
-      *ngIf="publication_date.errors && isValidForm != null && !isValidForm"
-      [ngClass]="'error'"
-    >
-      <div *ngIf="publication_date.errors.required">
-        Publication date is required
-      </div>
-    </div>
   </div>
   <div id="Categories">
     <mat-form-field appearance="fill">
       <mat-label>Categories</mat-label>
-      <mat-select
-        [(value)]="userCategoriesIDs"
-        [formControl]="categories"
-        multiple
-      >
+      <mat-select [(value)]="category" [formControl]="category">
         <mat-option
           *ngFor="let category of categoriesList"
           [value]="category.idCategory"
@@ -55,13 +47,15 @@
     <mat-form-field appearance="fill">
       <mat-label for="value">Quantitat:</mat-label>
       <input matInput type="number" [formControl]="value" />
+      <span matSuffix>€</span>
     </mat-form-field>
   </div>
   <div class="buttons">
     <button mat-icon-button type="submit">
-      <mat-icon>add_circle</mat-icon>
+      <mat-icon *ngIf="!isUpdateMode">add_circle</mat-icon>
+      <mat-icon *ngIf="isUpdateMode">edit</mat-icon>
     </button>
-    <button mat-icon-button (click)="goListData()">
+    <button mat-icon-button type="button" (click)="goListData()">
       <mat-icon>cancel</mat-icon>
     </button>
   </div>

@@ -28,7 +28,7 @@ export interface CategoriesState {
 
 export const initialState: CategoriesState = {
   categories: new Array<categoria>(),
-  category: new categoria('', '', '', '', ''),
+  category: new categoria(),
   loading: false,
   loaded: false,
   error: null,
@@ -73,12 +73,21 @@ const _categoryReducer = createReducer(
     loaded: false,
     error: { payload },
   })),
-  on(getCategorybyID, (state) => ({
-    ...state,
-    loading: true,
-    loaded: false,
-    error: null,
-  })),
+  on(getCategorybyID, (state, action) => {
+    const categoria = state.categories.find(
+      (value) => value.id === action.idCategory
+    );
+    if (categoria) {
+      return {
+        ...state,
+        category: categoria,
+        loading: true,
+        loaded: false,
+        error: null,
+      };
+    }
+    return { ...state, loading: true, loaded: false, error: null };
+  }),
   on(getCategorybyIDSuccess, (state, action) => ({
     ...state,
     category: action.categoria,

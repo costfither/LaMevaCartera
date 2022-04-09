@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import * as UserAction from '../actions';
-import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -20,7 +19,7 @@ import { UserService } from '../services/user.service';
 export class RegisterComponent implements OnInit {
   passwordHide = true;
 
-  user: User = new User('', '', '', 0, '', '', '');
+  user: any;
   registerForm: FormGroup;
   email: FormControl;
   pass: FormControl;
@@ -37,7 +36,7 @@ export class RegisterComponent implements OnInit {
       email: this.email,
       pass: this.pass,
     });
-    this.store.select('user').subscribe((user) => {
+    this.store.select('userState').subscribe((user) => {
       if (user.usuario) {
         this.route.navigateByUrl('');
       }

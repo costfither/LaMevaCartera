@@ -19,8 +19,8 @@ export class DataService {
 
   //obtenir transctions per UID
   getDatabyUID({ UID }: { UID: string }): Observable<data[]> {
-    const categoriaRef = collection(this.firestore, 'data');
-    const q = query(categoriaRef, where('UID', '==', UID));
+    const dataRef = collection(this.firestore, 'data');
+    const q = query(dataRef, where('UID', '==', UID));
     return collectionData(q, { idField: 'id' }) as Observable<data[]>;
   }
 
@@ -32,8 +32,8 @@ export class DataService {
     idData: string;
     UID: string;
   }): Observable<data[]> {
-    const categoriaRef = collection(this.firestore, 'data');
-    const q = query(categoriaRef, where('UID', '==', UID));
+    const dataRef = collection(this.firestore, 'data');
+    const q = query(dataRef, where('UID', '==', UID));
     const result = query(q, where('id', '==', idData));
     return collectionData(result, { idField: 'id' }) as Observable<data[]>;
   }

@@ -12,7 +12,7 @@ export class AuthguardGuard implements CanActivate {
   userUID: string = '';
 
   constructor(private router: Router, private store: Store<AppState>) {
-    this.store.select('user').subscribe((user) => {
+    this.store.select('userState').subscribe((user) => {
       if (user.usuario?.uid) this.userUID = user.usuario.uid;
     });
     this.store.dispatch(UserAction.getUser());

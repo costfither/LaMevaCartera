@@ -25,9 +25,10 @@
   </div>
   <div id="button">
     <button mat-icon-button type="submit">
-      <mat-icon>add_circle</mat-icon>
+      <mat-icon *ngIf="!isUpdateMode">add_circle</mat-icon>
+      <mat-icon *ngIf="isUpdateMode">edit</mat-icon>
     </button>
-    <button mat-icon-button (click)="goListCategory()">
+    <button mat-icon-button type="button" (click)="goListCategory()">
       <mat-icon>cancel</mat-icon>
     </button>
   </div>

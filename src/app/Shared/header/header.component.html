@@ -7,15 +7,36 @@
       <mat-icon>home</mat-icon>
       <span>Inici</span>
     </button>
-    <button mat-menu-item [disabled]="!loginUser" (click)="goAddData()">
-      <mat-icon>note_add</mat-icon>
-      <span>Afegir transacció</span>
+    <button
+      mat-menu-item
+      [disabled]="!loginUser"
+      (click)="goDataList()"
+      [matMenuTriggerFor]="data"
+    >
+      <mat-icon>view_list</mat-icon>
+      <span>Llista de transaccions</span>
     </button>
-    <button mat-menu-item [disabled]="!loginUser" (click)="goAddCategory()">
-      <mat-icon>library_add</mat-icon>
-      <span>Afegir categoria</span>
+    <button
+      mat-menu-item
+      [disabled]="!loginUser"
+      (click)="goCategoryList()"
+      [matMenuTriggerFor]="category"
+    >
+      <mat-icon>list</mat-icon>
+      <span>Llista de categories</span>
     </button>
   </mat-menu>
+  <mat-menu #data="matMenu">
+    <button mat-menu-item (click)="goAddData()">
+      <mat-icon>note_add</mat-icon><span>Afegir transacció</span>
+    </button>
+  </mat-menu>
+  <mat-menu #category="matMenu" (click)="goAddCategory()">
+    <button mat-menu-item>
+      <mat-icon>library_add</mat-icon><span>Afegir categoria</span>
+    </button>
+  </mat-menu>
+
   <span>La meva cartera</span>
   <span class="example-spacer"></span>
   <button *ngIf="loginUser" mat-icon-button (click)="logout()" class="right">

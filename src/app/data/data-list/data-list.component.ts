@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { User } from 'firebase/auth';
@@ -16,13 +17,15 @@ import { data, IData } from '../models/data.model';
 export class DataListComponent implements OnInit {
   sortedData: data[];
   dataList: data[];
+  filterDataList: { transaccio: data; selected: boolean }[];
   checkList: boolean[];
   categoryList: categoria[];
-  selectData: data[];
 
   selectAll: boolean = false;
 
   private user: User | null | undefined;
+
+  rangeDate: FormGroup;
 
   displayedColumns: string[] = [
     'checkbox',
@@ -35,52 +38,75 @@ export class DataListComponent implements OnInit {
 
   constructor(public router: Router, private store: Store<AppState>) {
     this.dataList = new Array<data>();
+    this.filterDataList = new Array<{ transaccio: data; selected: boolean }>();
+
     this.checkList = new Array<boolean>();
 
     this.sortedData = new Array<data>();
-    this.selectData = new Array<data>();
 
     this.categoryList = new Array<categoria>();
-    this.loadCategories();
-    this.loadData();
+    this.callCategories();
+    this.callData();
 
-    this.store.select('user').subscribe((userState) => {
-      this.user = userState.usuario;
+    this.rangeDate = new FormGroup({
+      start: new FormControl(),
+      end: new FormControl(),
     });
-    this.store.select('category').subscribe((categoriesState) => {
-      this.categoryList = categoriesState.categories;
-    });
-    this.store.select('transaction').subscribe((transactionState) => {
-      if (transactionState.transactions) {
-        this.sortedData = this.dataList;
-        const basicDataList = [...transactionState.transactions];
-        this.dataList = [...basicDataList];
 
-        basicDataList.forEach((value, index) => {
-          if (value.CategoryList) {
-            let categoryList: categoria[];
-            categoryList = new Array<categoria>();
-            value.CategoryList.forEach((category, catIndex) => {
-              const type = 0;
-              if (typeof category == typeof type) {
-                const result = this.categoryList.find(
-                  (cat) => cat.idCategory == (category as unknown as number)
-                ) as categoria;
-                categoryList.push(result);
-              } else {
-                categoryList.push(category);
-              }
-            });
-            this.dataList[index].CategoryList = categoryList;
-          }
-        });
-      }
+    this.store.select('userState').subscribe((userState) => {
+      this.user = userState?.usuario;
     });
-    this.loadCategories();
-    this.loadData();
+    this.store.select('categoryState').subscribe((categoriesState) => {
+      this.categoryList = categoriesState?.categories;
+    });
+    this.store.select('transactionState').subscribe((transactionState) => {
+      let datas = this.loadData(transactionState?.transactions);
+      this.filterDataList = this.filterLoadData(datas).map((value) => {
+        return { transaccio: value, selected: false };
+      });
+      this.orderData();
+    });
   }
 
-  loadCategories(): void {
+  loadData(transactions: data[]) {
+    return transactions.map((value) => {
+      //si es un tipus numero
+      if (typeof value.Category == typeof 0) {
+        value.Category = this.categoryList.find(
+          (cat) => cat.idCategory == (value.Category as unknown as number)
+        ) as categoria;
+      }
+      return value;
+    }) as data[];
+  }
+
+  orderData() {
+    this.dataList.sort(function (a, b) {
+      return new Date(a.publication_date).getTime() <
+        new Date(b.publication_date).getTime()
+        ? 1
+        : -1;
+    });
+  }
+
+  eventDate() {
+    this.filterDataList = this.filterLoadData(this.dataList).map((value) => {
+      return { transaccio: value, selected: false };
+    });
+  }
+
+  filterLoadData(transaccions: data[]): data[] {
+    return [...transaccions].filter(
+      (date) =>
+        (this.rangeDate.value.start == null &&
+          this.rangeDate.value.end == null) ||
+        (new Date(date.publication_date).getTime() >=
+          this.rangeDate.value.start &&
+          new Date(date.publication_date).getTime() <= this.rangeDate.value.end)
+    );
+  }
+
+  callCategories(): void {
     if (this.user) {
       this.store.dispatch(
         CategoriesAction.getCategoriesbyUID({ UID: this.user.uid })
@@ -88,14 +114,14 @@ export class DataListComponent implements OnInit {
     }
   }
 
-  loadData(): void {
+  callData(): void {
     if (this.user) {
-      this.store.dispatch(DataAction.getDatabyUID({ UID: this.user.uid }));
+      this.store.dispatch(DataAction.getDatabyUID({ UID: this.user?.uid }));
     }
   }
   ngOnInit(): void {
-    this.loadCategories();
-    this.loadData();
+    this.callCategories();
+    this.callData();
   }
 
   createData(): void {
@@ -113,20 +139,28 @@ export class DataListComponent implements OnInit {
   }
 
   checkAll(ob: boolean) {
-    if (ob) {
-      this.selectData = this.dataList;
-    } else {
-      this.selectData = new Array<data>();
-    }
+    console.log(ob);
+    this.filterDataList = this.filterDataList.map((data) => {
+      data.selected = ob;
+      return data;
+    });
+    console.log(this.filterDataList);
   }
 
   checkElement(transaccio: IData) {
-    this.selectData.push(transaccio);
+    this.filterDataList = this.filterDataList.map((data) => {
+      if (data.transaccio == transaccio) {
+        data.selected = !data.selected;
+      }
+      return data;
+    });
   }
 
-  deleteSelect(transaccions: IData[]) {
-    transaccions.forEach((transaccio) => {
-      this.deleteData(transaccio);
+  deleteSelect() {
+    this.filterDataList.forEach((data) => {
+      if (data.selected) {
+        this.deleteData(data.transaccio);
+      }
     });
   }
 

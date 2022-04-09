@@ -25,10 +25,9 @@ export class CategoriaAddComponent implements OnInit {
   categoria: categoria;
   isValidForm: boolean | null;
 
-  private userId: string;
   private user: User | null | undefined;
   private categoryIdField: string | null;
-  private isUpdateMode: boolean;
+  isUpdateMode: boolean;
   private categoryId: number | null;
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -36,10 +35,9 @@ export class CategoriaAddComponent implements OnInit {
     private formBuilder: FormBuilder,
     private store: Store<AppState>
   ) {
-    this.userId = '';
     this.isValidForm = null;
     this.categoryIdField = this.activatedRoute.snapshot.paramMap.get('id');
-    this.categoria = new categoria('', '', '', '');
+    this.categoria = new categoria();
     this.categoryId = this.categoria.idCategory;
     this.isUpdateMode = false;
 
@@ -53,44 +51,51 @@ export class CategoriaAddComponent implements OnInit {
       color: this.color,
     });
 
-    this.store.select('user').subscribe((user) => {
-      this.user = user.usuario;
-      if (user?.usuario.uid) this.userId = user?.usuario.uid;
+    this.store.select('userState').subscribe((user) => {
+      this.user = user?.usuario;
     });
-
-    this.store.select('category').subscribe((category) => {
-      this.categoria = category.category;
-      if (this.categoria) {
+    this.store.select('categoryState').subscribe((categoryState) => {
+      if (categoryState?.category) {
+        this.categoria = categoryState.category;
         this.name.setValue(this.categoria.name);
         this.description.setValue(this.categoria.description);
         this.color.setValue(this.categoria.color);
       }
     });
   }
+  private loadCategory(): void {
+    this.store.dispatch(
+      CategoriesAction.getCategorybyID({
+        idCategory: this.categoryIdField as string,
+        UID: this.user?.uid as string,
+      })
+    );
+  }
 
   ngOnInit(): void {
     //update
     if (this.categoryIdField) {
       this.isUpdateMode = true;
-      this.store.dispatch(
-        CategoriesAction.getCategorybyID({
-          idCategory: this.categoryIdField,
-          UID: this.userId,
-        })
-      );
+      this.loadCategory();
     } else {
       this.categoryForm.reset();
     }
   }
 
   goListCategory() {
-    this.route.navigateByUrl('category');
+    this.route
+      .navigateByUrl('category')
+      .then(() =>
+        this.store.dispatch(
+          CategoriesAction.getCategoriesbyUID({ UID: this.user?.uid as string })
+        )
+      );
   }
 
   private editCategory(): void {
     if (this.categoryIdField) {
-      if (this.userId) {
-        this.categoria.UID = this.userId;
+      if (this.user?.uid) {
+        this.categoria.UID = this.user?.uid;
         this.store.dispatch(
           CategoriesAction.updateCategory({
             idCategory: this.categoryIdField,
@@ -102,13 +107,13 @@ export class CategoriaAddComponent implements OnInit {
   }
 
   private createCategory(): void {
-    if (this.userId) {
-      this.categoria.UID = this.userId;
+    if (this.user?.uid) {
+      this.categoria.UID = this.user?.uid;
       if (this.categoryId) this.categoria.idCategory = this.categoryId;
       this.store.dispatch(
         CategoriesAction.createCategories({ category: this.categoria })
       );
-      this.route.navigateByUrl('/category');
+      this.route.navigateByUrl('category');
     }
   }
   saveCategory() {

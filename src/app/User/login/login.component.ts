@@ -36,9 +36,11 @@ export class LoginComponent implements OnInit {
       email: this.email,
       pass: this.pass,
     });
-    this.store.select('user').subscribe((user) => {
-      if (user.usuario) {
-        this.route.navigateByUrl('', { skipLocationChange: true });
+    this.store.select('userState').subscribe((user) => {
+      if (user) {
+        if (user.usuario) {
+          this.route.navigateByUrl('', { skipLocationChange: true });
+        }
       }
     });
   }
@@ -56,5 +58,9 @@ export class LoginComponent implements OnInit {
 
   register(): void {
     this.route.navigateByUrl('/register');
+  }
+
+  googleAuth(): void {
+    this.store.dispatch(UserAction.loginGoogle());
   }
 }

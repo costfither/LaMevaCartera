@@ -7,10 +7,10 @@ export class categoria {
   public color: string;
 
   constructor(
-    UID: string,
-    name: string,
-    description: string,
-    color: string,
+    UID: string = '',
+    name: string = '',
+    description: string = '',
+    color: string = '',
     id?: string
   ) {
     this.id = id;

@@ -1,8 +1,4 @@
-import {
-  MAT_COLOR_FORMATS,
-  NgxMatColorPickerModule,
-  NGX_MAT_COLOR_FORMATS,
-} from '@angular-material-components/color-picker';
+import { NgxMatColorPickerModule } from '@angular-material-components/color-picker';
 import { NgModule } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -12,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -55,6 +53,7 @@ import { RegisterComponent } from './User/register/register.component';
   ],
   imports: [
     BrowserModule,
+    MatNativeDateModule,
     AppRoutingModule,
     ReactiveFormsModule,
     NgxMatColorPickerModule,
@@ -70,6 +69,7 @@ import { RegisterComponent } from './User/register/register.component';
     MatInputModule,
     MatTableModule,
     MatSlideToggleModule,
+    MatDatepickerModule,
     MatSortModule,
     FormsModule,
     MatCheckboxModule,
@@ -94,7 +94,7 @@ import { RegisterComponent } from './User/register/register.component';
     CategoriaModule,
     DataModule,
   ],
-  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

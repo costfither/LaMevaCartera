@@ -22,12 +22,16 @@ export class CategoriaListComponent implements OnInit {
     this.categoryList = new Array<categoria>();
     this.selectCategory = new Array<categoria>();
 
-    this.store.select('user').subscribe((user) => {
-      this.user = user.usuario;
-      this.loadCategory();
+    this.store.select('userState').subscribe((user) => {
+      if (user) {
+        this.user = user.usuario;
+        this.loadCategory();
+      }
     });
-    this.store.select('category').subscribe((categories) => {
-      this.categoryList = categories.categories;
+    this.store.select('categoryState').subscribe((categories) => {
+      if (categories) {
+        this.categoryList = categories.categories;
+      }
     });
   }
 

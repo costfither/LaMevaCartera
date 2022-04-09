@@ -101,30 +101,18 @@ export class CategoriesEffects {
     this.actions$.pipe(
       ofType(CategoriaAction.getCategorybyID),
       exhaustMap(({ idCategory, UID }) =>
-        this.categoriesService.getCategorybyId(idCategory, UID).pipe(
-          map((categoria) => {
-            return CategoriaAction.getCategorybyIDSuccess({
+        this.categoriesService.getCategorybyId({ idCategory, UID }).pipe(
+          map((categoria) =>
+            CategoriaAction.getCategorybyIDSuccess({
               categoria: categoria[0],
-            });
-          }),
-          catchError((error) => {
-            return of(
-              CategoriaAction.getCategorybyIDFailure({ payload: error })
-            );
-          })
+            })
+          ),
+          catchError((error) =>
+            of(CategoriaAction.getCategorybyIDFailure({ payload: error }))
+          )
         )
       )
     )
-  );
-  getCategorybyIdSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CategoriaAction.getCategorybyIDSuccess),
-        map(() => {
-          this.responseOK = true;
-        })
-      ),
-    { dispatch: false }
   );
   getCategorybyIdFailure$ = createEffect(
     () =>

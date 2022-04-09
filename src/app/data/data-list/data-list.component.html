@@ -1,12 +1,41 @@
 <h2>Llista de data</h2>
+<mat-form-field appearance="fill">
+  <mat-label>Entrar rang de data</mat-label>
+  <mat-date-range-input [formGroup]="rangeDate" [rangePicker]="picker">
+    <input
+      matStartDate
+      formControlName="start"
+      placeholder="Start date"
+      (dateInput)="eventDate()"
+      (dateChange)="eventDate()"
+    />
+    <input
+      matEndDate
+      formControlName="end"
+      placeholder="End date"
+      (dateInput)="eventDate()"
+      (dateChange)="eventDate()"
+    />
+  </mat-date-range-input>
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-date-range-picker #picker></mat-date-range-picker>
+
+  <mat-error *ngIf="rangeDate.controls.start.hasError('matStartDateInvalid')"
+    >Invalid start date</mat-error
+  >
+  <mat-error *ngIf="rangeDate.controls.end.hasError('matEndDateInvalid')"
+    >Invalid end date</mat-error
+  >
+</mat-form-field>
+
 <div class="listData">
-  <table mat-table [dataSource]="dataList">
+  <table mat-table [dataSource]="filterDataList">
     <!-- type Column -->
     <ng-container matColumnDef="checkbox">
       <th mat-header-cell *matHeaderCellDef>
         <mat-checkbox
           color="primary"
-          value="selectAll"
+          [(ngModel)]="selectAll"
           (click)="checkAll(selectAll)"
         ></mat-checkbox>
       </th>
@@ -14,13 +43,13 @@
         mat-cell
         *matCellDef="let element"
         [ngClass]="{
-          ingress: element.type == true,
-          despessa: element.type != true
+          ingress: element.transaccio.type == true,
+          despessa: element.transaccio.type != true
         }"
       >
         <mat-checkbox
           color="primary"
-          value="{{ element.select }}"
+          [(ngModel)]="element.selected"
           (click)="checkElement(element)"
         ></mat-checkbox>
       </td>
@@ -32,11 +61,11 @@
         mat-cell
         *matCellDef="let element"
         [ngClass]="{
-          ingress: element.type == true,
-          despessa: element.type != true
+          ingress: element.transaccio.type == true,
+          despessa: element.transaccio.type != true
         }"
       >
-        {{ element.description }}
+        {{ element.transaccio.description }}
       </td>
     </ng-container>
     <!-- PUBLICACIÓ Column -->
@@ -46,11 +75,11 @@
         mat-cell
         *matCellDef="let element"
         [ngClass]="{
-          ingress: element.type == true,
-          despessa: element.type != true
+          ingress: element.transaccio.type == true,
+          despessa: element.transaccio.type != true
         }"
       >
-        {{ element.publication_date }}
+        {{ element.transaccio.publication_date }}
       </td>
     </ng-container>
     <!-- CATEGORIES Column -->
@@ -60,13 +89,11 @@
         mat-cell
         *matCellDef="let element"
         [ngClass]="{
-          ingress: element.type == true,
-          despessa: element.type != true
+          ingress: element.transaccio.type == true,
+          despessa: element.transaccio.type != true
         }"
       >
-        <div *ngFor="let category of element.CategoryList">
-          <p *ngIf="category">{{ category.name }}</p>
-        </div>
+        {{ element.transaccio.Category.name }}
       </td>
     </ng-container>
     <!-- VALOR Column -->
@@ -76,11 +103,11 @@
         mat-cell
         *matCellDef="let element"
         [ngClass]="{
-          ingress: element.type == true,
-          despessa: element.type != true
+          ingress: element.transaccio.type == true,
+          despessa: element.transaccio.type != true
         }"
       >
-        {{ element.value }}€
+        {{ element.transaccio.value }}€
       </td>
     </ng-container>
     <!-- ACTIONS Column -->
@@ -90,14 +117,14 @@
         mat-cell
         *matCellDef="let element"
         [ngClass]="{
-          ingress: element.type == true,
-          despessa: element.type != true
+          ingress: element.transaccio.type == true,
+          despessa: element.transaccio.type != true
         }"
       >
-        <button mat-icon-button (click)="updateData(element.id)">
+        <button mat-icon-button (click)="updateData(element.transaccio.id)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="deleteData(element)">
+        <button mat-icon-button (click)="deleteData(element.transaccio)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -107,14 +134,11 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </div>
-<div>
+<div id="button">
   <button mat-icon-button (click)="createData()">
     <mat-icon>add_circle</mat-icon>
   </button>
-  <button mat-icon-button (click)="deleteSelect(selectData)">
+  <button mat-icon-button (click)="deleteSelect()">
     <mat-icon>delete</mat-icon>
-  </button>
-  <button mat-icon-button (click)="loadData()">
-    <mat-icon>settings_backup_restore</mat-icon>
   </button>
 </div>

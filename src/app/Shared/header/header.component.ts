@@ -14,10 +14,10 @@ export class HeaderComponent implements OnInit {
   loginUser: boolean = false;
 
   constructor(private route: Router, private store: Store<AppState>) {
-    this.store.select('user').subscribe((user) => {
-      if (user.usuario) {
-        this.user = user.usuario;
-        if (user.usuario.uid) {
+    this.store.select('userState').subscribe((user) => {
+      if (user) {
+        if (user.usuario) {
+          this.user = user.usuario;
           this.loginUser = true;
         } else {
           this.loginUser = false;
@@ -36,8 +36,14 @@ export class HeaderComponent implements OnInit {
     this.route.navigateByUrl('login');
   }
 
+  goCategoryList() {
+    this.route.navigateByUrl('category');
+  }
   goAddCategory() {
     this.route.navigateByUrl('category/add');
+  }
+  goDataList() {
+    this.route.navigateByUrl('data');
   }
 
   goAddData() {

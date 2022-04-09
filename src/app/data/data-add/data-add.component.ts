@@ -11,7 +11,6 @@ import { Store } from '@ngrx/store';
 import { User } from 'firebase/auth';
 import { AppState } from 'src/app/app.reducers';
 import { categoria } from 'src/app/Categories/models/categoria.model';
-import { UserService } from 'src/app/User/services/user.service';
 import * as CategoriesAction from '../../Categories/actions';
 import * as DataAction from '../actions';
 import { data } from '../models/data.model';
@@ -31,7 +30,7 @@ export class DataAddComponent implements OnInit {
 
   description: FormControl;
   type: FormControl;
-  categories: FormControl;
+  category: FormControl;
   value: FormControl;
   publication_date: FormControl;
   dataForm: FormGroup;
@@ -43,24 +42,18 @@ export class DataAddComponent implements OnInit {
   private transaccionIdData: number;
   categoriesList!: categoria[];
 
-  private userId: string;
   private user: User | null | undefined;
-  userCategoriesIDs: number[] = [];
+  userCategoriesIDs!: number;
 
   constructor(
     private router: Router,
-    private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private store: Store<AppState>
   ) {
-    this.userId = '';
-    this.userService.getUser().subscribe((user) => {
-      this.userId = user?.uid as string;
-    });
     this.isValidForm = null;
     this.transaccionId = this.activatedRoute.snapshot.paramMap.get('id');
-    this.transaccio = new data('', '', [], 0, false, '', new Date());
+    this.transaccio = new data();
     this.isUpdateMode = false;
     this.transaccionIdData = 0;
 
@@ -69,7 +62,9 @@ export class DataAddComponent implements OnInit {
     ]);
     this.type = new FormControl(this.transaccio.type);
     this.value = new FormControl(this.transaccio.value, [Validators.required]);
-    this.categories = new FormControl([]);
+    this.category = new FormControl(this.transaccio.Category, [
+      Validators.required,
+    ]);
     this.publication_date = new FormControl(this.transaccio.publication_date, [
       Validators.required,
     ]);
@@ -78,24 +73,24 @@ export class DataAddComponent implements OnInit {
       description: this.description,
       type: this.type,
       value: this.value,
-      CategoryList: this.categories,
+      Category: this.category,
       publication_date: this.publication_date,
     });
-    this.store.select('user').subscribe((user) => {
-      this.user = user.usuario;
+    this.store.select('userState').subscribe((user) => {
+      this.user = user?.usuario;
     });
-    this.store.select('category').subscribe((category) => {
-      this.categoriesList = category.categories;
+    this.store.select('categoryState').subscribe((category) => {
+      this.categoriesList = category?.categories;
     });
-    this.store.select('transaction').subscribe((transaccioState) => {
-      if (transaccioState.transaction) {
+    this.store.select('transactionState').subscribe((transaccioState) => {
+      if (transaccioState?.transaction) {
         this.transaccio = transaccioState.transaction;
         this.transaccionIdData = this.transaccio.idData;
-        if (this.transaccio.CategoryList) {
-          this.transaccio.CategoryList.forEach((cat: categoria) => {
-            this.userCategoriesIDs.push(cat.idCategory);
-          });
-          this.categories.setValue(this.userCategoriesIDs);
+        if (this.transaccio.Category) {
+          this.userCategoriesIDs = (
+            this.transaccio.Category as categoria
+          ).idCategory;
+          this.category.setValue(this.transaccio.Category);
           this.description.setValue(this.transaccio.description);
           this.type.setValue(this.transaccio.type);
           this.value.setValue(this.transaccio.value);
@@ -106,24 +101,27 @@ export class DataAddComponent implements OnInit {
   }
 
   private loadTransaccion(): void {
-    if (this.transaccionId && this.userId) {
+    if (this.transaccionId && this.user?.uid) {
       this.store.dispatch(
-        DataAction.getDatabyID({ idData: this.transaccionId, UID: this.userId })
+        DataAction.getDatabyID({
+          idData: this.transaccionId,
+          UID: this.user?.uid,
+        })
       );
     }
   }
 
   private loadCategories(): void {
-    if (this.userId) {
+    if (this.user?.uid) {
       this.store.dispatch(
-        CategoriesAction.getCategoriesbyUID({ UID: this.userId })
+        CategoriesAction.getCategoriesbyUID({ UID: this.user?.uid })
       );
     }
   }
 
   ngOnInit(): void {
     this.loadCategories();
-    if (this.transaccionId && this.userId) {
+    if (this.transaccionId && this.user?.uid) {
       this.isUpdateMode = true;
       this.loadTransaccion();
     } else {
@@ -137,8 +135,8 @@ export class DataAddComponent implements OnInit {
 
   private editTransaccio(): void {
     if (this.transaccionId) {
-      if (this.userId) {
-        this.transaccio.UID = this.userId;
+      if (this.user?.uid) {
+        this.transaccio.UID = this.user?.uid;
         this.transaccio.id = this.transaccionId;
         this.store.dispatch(
           DataAction.updateData({
@@ -152,8 +150,8 @@ export class DataAddComponent implements OnInit {
   }
 
   private createTransaccio(): void {
-    if (this.userId) {
-      this.transaccio.UID = this.userId;
+    if (this.user?.uid) {
+      this.transaccio.UID = this.user?.uid;
       this.transaccio.idData = this.transaccionIdData;
       this.store.dispatch(
         DataAction.createData({ transaction: this.transaccio })
@@ -165,6 +163,7 @@ export class DataAddComponent implements OnInit {
   saveData(): void {
     this.isValidForm = false;
     if (this.dataForm.invalid) {
+      console.log('ahoasdfa');
       return;
     }
 
@@ -179,12 +178,16 @@ export class DataAddComponent implements OnInit {
   }
 
   goListData() {
-    if (this.userId) {
+    if (this.user?.uid) {
       this.router
-        .navigateByUrl('/data')
+        .navigateByUrl('data')
         .then(() =>
-          this.store.dispatch(DataAction.getDatabyUID({ UID: this.userId }))
+          this.store.dispatch(
+            DataAction.getDatabyUID({ UID: this.user?.uid as string })
+          )
         );
+    } else {
+      this.router.navigateByUrl('');
     }
   }
 }
