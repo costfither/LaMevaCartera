@@ -59,12 +59,14 @@ export class DataAddComponent implements OnInit {
 
     this.description = new FormControl(this.transaccio.description, [
       Validators.required,
+      Validators.minLength(3),
     ]);
     this.type = new FormControl(this.transaccio.type);
-    this.value = new FormControl(this.transaccio.value, [Validators.required]);
-    this.category = new FormControl(this.transaccio.Category, [
+    this.value = new FormControl(this.transaccio.value, [
       Validators.required,
+      Validators.min(0),
     ]);
+    this.category = new FormControl(this.transaccio.Category);
     this.publication_date = new FormControl(this.transaccio.publication_date, [
       Validators.required,
     ]);
@@ -138,6 +140,7 @@ export class DataAddComponent implements OnInit {
       if (this.user?.uid) {
         this.transaccio.UID = this.user?.uid;
         this.transaccio.id = this.transaccionId;
+        this.transaccio.Category = this.category.value;
         this.store.dispatch(
           DataAction.updateData({
             id: this.transaccionId,
@@ -163,7 +166,6 @@ export class DataAddComponent implements OnInit {
   saveData(): void {
     this.isValidForm = false;
     if (this.dataForm.invalid) {
-      console.log('ahoasdfa');
       return;
     }
 
@@ -178,16 +180,12 @@ export class DataAddComponent implements OnInit {
   }
 
   goListData() {
-    if (this.user?.uid) {
-      this.router
-        .navigateByUrl('data')
-        .then(() =>
-          this.store.dispatch(
-            DataAction.getDatabyUID({ UID: this.user?.uid as string })
-          )
-        );
-    } else {
-      this.router.navigateByUrl('');
-    }
+    this.router
+      .navigateByUrl('data')
+      .then(() =>
+        this.store.dispatch(
+          DataAction.getDatabyUID({ UID: this.user?.uid as string })
+        )
+      );
   }
 }

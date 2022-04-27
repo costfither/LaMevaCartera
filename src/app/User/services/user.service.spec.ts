@@ -31,7 +31,7 @@ describe('UserService', () => {
 
   it('should logged in', async(() => {
     service.login(userCreds.email, userCreds.password).subscribe((res) => {
-      expect(res).toBeTruthy();
+      expect(res).toHaveBeenCalled();
     });
   }));
 });

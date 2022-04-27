@@ -10,10 +10,15 @@ h2.neutral {
 h2.negative {
   color: #ffd16f;
 }
-div.list {
-  display: inline-flex;
-  flex-direction: row;
+div.border {
   width: 100%;
+}
+div.list {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  justify-content: center;
+  margin: 10px;
 }
 div#ingressos {
   margin: 5px;
@@ -51,4 +56,11 @@ div#despesses tr:nth-child(odd) {
 }
 div#despesses tr:nth-child(even) {
   background-color: #ffd16f;
+}
+
+@media screen and (min-width: 780px) {
+  div.list div {
+    max-width: 500px;
+    margin: 10px;
+  }
 }

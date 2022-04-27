@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import * as UserAction from '../actions';
-import { UserService } from '../services/user.service';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -19,18 +19,20 @@ import { UserService } from '../services/user.service';
 export class RegisterComponent implements OnInit {
   passwordHide = true;
 
-  user: any;
   registerForm: FormGroup;
   email: FormControl;
   pass: FormControl;
+  user: User = new User('', '', '', 0, '', '', '');
 
   constructor(
     private store: Store<AppState>,
-    public userService: UserService,
     private route: Router,
     private formBuilder: FormBuilder
   ) {
-    this.email = new FormControl(this.user.email, [Validators.required]);
+    this.email = new FormControl(this.user.email, [
+      Validators.required,
+      Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+    ]);
     this.pass = new FormControl(this.user.password, [Validators.required]);
     this.registerForm = this.formBuilder.group({
       email: this.email,

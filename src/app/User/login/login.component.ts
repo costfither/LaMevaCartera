@@ -28,7 +28,10 @@ export class LoginComponent implements OnInit {
     private route: Router,
     private formBuilder: FormBuilder
   ) {
-    this.email = new FormControl(this.user.email, [Validators.required]);
+    this.email = new FormControl(this.user.email, [
+      Validators.required,
+      Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+    ]);
     this.pass = new FormControl(this.user.password, [Validators.required]);
     this.email.setValue(this.user.email);
     this.pass.setValue(this.user.password);

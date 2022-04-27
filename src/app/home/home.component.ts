@@ -48,7 +48,9 @@ export class HomeComponent implements OnInit {
 
     this.store.select('transactionState').subscribe((transaccio) => {
       this.transaccioList = transaccio?.transactions;
-      this.transaccionList(transaccio?.transactions);
+      if (transaccio?.transactions) {
+        this.transaccionList(transaccio?.transactions);
+      }
     });
     this.loadCategories();
     this.loadData();

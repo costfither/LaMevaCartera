@@ -16,7 +16,13 @@
   <div id="description">
     <mat-form-field appearance="fill">
       <mat-label for="description">Descripció:</mat-label>
-      <input matInput type="text" [formControl]="description" maxlength="256" />
+      <input matInput type="text" [formControl]="description" />
+      <mat-error *ngIf="description.errors?.required"
+        >Introdueix una descripció</mat-error
+      >
+      <mat-error *ngIf="description.errors?.minLength"
+        >Longitud mínima de la descripció es de 10 caràcters</mat-error
+      >
     </mat-form-field>
   </div>
   <div id="publicationDate">
@@ -28,17 +34,20 @@
         data-date-format="YYYY MMMM DD"
         [formControl]="publication_date"
       />
+      <mat-error *ngIf="publication_date.errors?.required"
+        >Introdueix una data de publicació</mat-error
+      >
     </mat-form-field>
   </div>
   <div id="Categories">
     <mat-form-field appearance="fill">
-      <mat-label>Categories</mat-label>
-      <mat-select [(value)]="category" [formControl]="category">
+      <mat-label>Seleccionar categoria</mat-label>
+      <mat-select [formControl]="category">
         <mat-option
-          *ngFor="let category of categoriesList"
-          [value]="category.idCategory"
+          *ngFor="let categoria of categoriesList"
+          [value]="categoria.idCategory"
         >
-          {{ category.name }}
+          {{ categoria.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -48,6 +57,13 @@
       <mat-label for="value">Quantitat:</mat-label>
       <input matInput type="number" [formControl]="value" />
       <span matSuffix>€</span>
+      <mat-error *ngIf="value.errors?.required"
+        >Introdueix un valor de transacció</mat-error
+      >
+      <mat-error *ngIf="value.errors?.min"
+        >L'import mínim de transacció es de 0€, el valor no pot ser
+        negatiu</mat-error
+      >
     </mat-form-field>
   </div>
   <div class="buttons">

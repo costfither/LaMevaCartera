@@ -9,16 +9,20 @@ import { environment } from 'src/environments/environment';
 import * as CategoriesReducer from '../Categories/reducer';
 import * as DataAction from '../data/actions';
 import * as DataReducer from '../data/reducer';
-import { User } from '../User/models/user.model';
 import * as UserReducer from '../User/reducer';
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let user: User = {
+  let user: any = {
     UID: '01ORm4Dk26T1GuFM5qNsWpPstW32',
     email: 'arnau.costabella@gmail.com',
+    id: 0,
+    name: '',
+    surname1: '',
+    surname2: '',
+    password: '',
   };
   let storeUser: Store<UserReducer.UserState>;
   let storeData: Store<DataReducer.DatasState>;
@@ -60,6 +64,7 @@ describe('HomeComponent', () => {
 
   it('should dispatch an action to load data when created', () => {
     const action = DataAction.getDatabyUID({ UID: user.UID });
+    component.user = user;
     component.loadData();
 
     expect(storeData.dispatch).toHaveBeenCalledWith(action);

@@ -12,14 +12,17 @@ import { categoria } from '../models/categoria.model';
   styleUrls: ['./categoria-list.component.css'],
 })
 export class CategoriaListComponent implements OnInit {
-  categoryList: categoria[];
+  categoryList: { categoria: categoria; selected: boolean }[];
   private user: User | null | undefined;
   displayedColumns: string[] = ['checkbox', 'name', 'description', 'action'];
   selectCategory: categoria[];
   selectAll: boolean = false;
 
   constructor(private router: Router, private store: Store<AppState>) {
-    this.categoryList = new Array<categoria>();
+    this.categoryList = new Array<{
+      categoria: categoria;
+      selected: boolean;
+    }>();
     this.selectCategory = new Array<categoria>();
 
     this.store.select('userState').subscribe((user) => {
@@ -29,9 +32,9 @@ export class CategoriaListComponent implements OnInit {
       }
     });
     this.store.select('categoryState').subscribe((categories) => {
-      if (categories) {
-        this.categoryList = categories.categories;
-      }
+      this.categoryList = categories?.categories.map((value) => {
+        return { categoria: value, selected: false };
+      });
     });
   }
 
@@ -46,15 +49,19 @@ export class CategoriaListComponent implements OnInit {
   }
 
   checkAll(ob: boolean) {
-    if (ob) {
-      this.selectCategory = [...this.categoryList];
-    } else {
-      this.selectCategory = new Array<categoria>();
-    }
+    this.categoryList = this.categoryList.map((categoria) => {
+      categoria.selected = ob;
+      return categoria;
+    });
   }
 
   checkElement(categoria: categoria) {
-    this.selectCategory.push(categoria);
+    this.categoryList = this.categoryList.map((value) => {
+      if (value.categoria == categoria) {
+        value.selected = !value.selected;
+      }
+      return value;
+    });
   }
 
   createCategory(): void {
@@ -66,19 +73,23 @@ export class CategoriaListComponent implements OnInit {
   }
   deleteSelect(categories: categoria[]) {
     categories.forEach((categoria) => {
-      this.deleteCategory(categoria.id);
+      this.deleteCategory(categoria);
     });
   }
 
-  deleteCategory(id: string | undefined): void {
+  deleteCategory(categoria: categoria): void {
+    console.log(categoria);
     let result = confirm(
-      'Confirmar eliminar categoria amb identificador: ' + id + ' .'
+      'Confirmar eliminar categoria amb identificador: ' + categoria.id + ' .'
     );
     if (result) {
       const category = this.categoryList.find(
-        (category) => category.id === id
-      ) as categoria;
-      this.store.dispatch(CategoriesAction.deleteCategory({ category }));
+        (category) => category.categoria.id === categoria.id
+      ) as { categoria: categoria; selected: boolean };
+      console.log(category);
+      this.store.dispatch(
+        CategoriesAction.deleteCategory({ category: category.categoria })
+      );
     }
   }
 }

@@ -33,6 +33,7 @@ describe('DataAddComponent', () => {
           category: combineReducers(CategoryReducer.categoryReducer),
           user: combineReducers(UserReducer.userReducer),
         }),
+        
       ],
       declarations: [DataAddComponent],
       providers: [

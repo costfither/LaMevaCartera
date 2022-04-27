@@ -6,18 +6,18 @@
       <th mat-header-cell *matHeaderCellDef>
         <mat-checkbox
           color="primary"
-          value="selectAll"
+          [(ngModel)]="selectAll"
           (click)="checkAll(selectAll)"
         ></mat-checkbox>
       </th>
       <td
         mat-cell
         *matCellDef="let element"
-        [style.background-color]="element.color"
+        [style.background-color]="element.categoria.color"
       >
         <mat-checkbox
           color="primary"
-          value="{{ element.select }}"
+          [(ngModel)]="element.selected"
           (click)="checkElement(element)"
         ></mat-checkbox>
       </td>
@@ -28,9 +28,9 @@
       <td
         mat-cell
         *matCellDef="let element"
-        [style.background-color]="element.color"
+        [style.background-color]="element.categoria.color"
       >
-        {{ element.name }}
+        {{ element.categoria.name }}
       </td>
     </ng-container>
     <!-- DESCRIPTION Column -->
@@ -39,9 +39,9 @@
       <td
         mat-cell
         *matCellDef="let element"
-        [style.background-color]="element.color"
+        [style.background-color]="element.categoria.color"
       >
-        {{ element.description }}
+        {{ element.categoria.description }}
       </td>
     </ng-container>
 
@@ -51,12 +51,12 @@
       <td
         mat-cell
         *matCellDef="let element"
-        [style.background-color]="element.color"
+        [style.background-color]="element.categoria.color"
       >
-        <button mat-icon-button (click)="updateCategory(element.id)">
+        <button mat-icon-button (click)="updateCategory(element.categoria.id)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="deleteCategory(element)">
+        <button mat-icon-button (click)="deleteCategory(element.categoria)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

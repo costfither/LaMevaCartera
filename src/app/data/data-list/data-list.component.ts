@@ -81,9 +81,9 @@ export class DataListComponent implements OnInit {
   }
 
   orderData() {
-    this.dataList.sort(function (a, b) {
-      return new Date(a.publication_date).getTime() <
-        new Date(b.publication_date).getTime()
+    this.filterDataList.sort(function (a, b) {
+      return new Date(a.transaccio.publication_date).getTime() <
+        new Date(b.transaccio.publication_date).getTime()
         ? 1
         : -1;
     });
@@ -139,12 +139,10 @@ export class DataListComponent implements OnInit {
   }
 
   checkAll(ob: boolean) {
-    console.log(ob);
     this.filterDataList = this.filterDataList.map((data) => {
       data.selected = ob;
       return data;
     });
-    console.log(this.filterDataList);
   }
 
   checkElement(transaccio: IData) {

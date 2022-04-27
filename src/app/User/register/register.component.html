@@ -2,19 +2,15 @@
   <form [formGroup]="registerForm" (submit)="registrar()">
     <h1>Registar usuari</h1>
     <div>
-      <mat-form-field class="example-form-field">
+      <mat-form-field appearance="fill">
         <mat-label>Correu electrònic</mat-label>
         <input matInput type="text" [formControl]="email" />
-        <button
-          mat-button
-          *ngIf="email"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-          (click)="(user.email)"
+        <mat-error *ngIf="email.errors?.required"
+          >Introdueix un correu electrónic</mat-error
         >
-          <mat-icon>close</mat-icon>
-        </button>
+        <mat-error *ngIf="email.errors?.pattern"
+          >Introdueix un correu electrónic</mat-error
+        >
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Entrar la teva contrasenya</mat-label>
@@ -23,6 +19,10 @@
           [formControl]="pass"
           [type]="passwordHide ? 'password' : 'text'"
         />
+        <mat-error *ngIf="pass.errors?.required"
+          >Introdueix una contrasenya</mat-error
+        >
+
         <button
           mat-icon-button
           matSuffix

@@ -39,15 +39,8 @@ export class HeaderComponent implements OnInit {
   goCategoryList() {
     this.route.navigateByUrl('category');
   }
-  goAddCategory() {
-    this.route.navigateByUrl('category/add');
-  }
   goDataList() {
     this.route.navigateByUrl('data');
-  }
-
-  goAddData() {
-    this.route.navigateByUrl('data/add');
   }
 
   logout() {

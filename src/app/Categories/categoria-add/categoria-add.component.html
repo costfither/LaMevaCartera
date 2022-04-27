@@ -3,7 +3,10 @@
   <div>
     <mat-form-field appearance="fill">
       <mat-label for="name">Nom:</mat-label>
-      <input matInput type="text" [formControl]="name" maxlength="256" />
+      <input matInput type="text" [formControl]="name" />
+      <mat-error *ngIf="name.errors?.required"
+        >Introdueix un nom de categoria</mat-error
+      >
     </mat-form-field>
   </div>
   <div class="form-group">
@@ -15,12 +18,15 @@
         placeholder="Color de la categoria"
         [formControl]="color"
       />
+      <mat-error *ngIf="color.errors?.required"
+        >Introdueix un color de categoria</mat-error
+      >
     </mat-form-field>
   </div>
   <div>
     <mat-form-field appearance="fill">
       <mat-label for="description">Descripció:</mat-label>
-      <input matInput type="text" [formControl]="description" maxlength="256" />
+      <input matInput type="text" [formControl]="description" />
     </mat-form-field>
   </div>
   <div id="button">

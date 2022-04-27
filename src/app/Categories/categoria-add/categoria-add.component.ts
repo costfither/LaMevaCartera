@@ -102,6 +102,7 @@ export class CategoriaAddComponent implements OnInit {
             category: this.categoria,
           })
         );
+        this.goListCategory();
       }
     }
   }

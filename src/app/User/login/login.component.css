@@ -2,9 +2,12 @@ form {
   align-items: center;
   text-align: center;
 }
-
+div#button {
+  margin-bottom: 30px;
+}
 div.button {
   display: flex;
+  align-items: center;
   flex-direction: column;
   margin: 20px;
 }
@@ -14,7 +17,22 @@ div.button button {
 }
 
 div.form {
-  height: 30%;
   margin: auto;
-  margin-top: 20%;
+  margin-top: 50px;
+  padding-bottom: 40px;
+}
+button {
+  width: 200px;
+}
+mat-form-field {
+  width: 300px;
+}
+
+/* For PC */
+@media screen and (min-width: 500px) {
+  div.form div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }

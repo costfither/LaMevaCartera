@@ -40,6 +40,7 @@ import { FooterComponent } from './Shared/footer/footer.component';
 import { HeaderComponent } from './Shared/header/header.component';
 import { LoginComponent } from './User/login/login.component';
 import { RegisterComponent } from './User/register/register.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,12 @@ import { RegisterComponent } from './User/register/register.component';
     BrowserAnimationsModule,
     CategoriaModule,
     DataModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent],

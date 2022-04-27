@@ -11,7 +11,7 @@
     </h2>
   </div>
   <mat-form-field appearance="fill">
-    <mat-label>Entrar rang de data</mat-label>
+    <mat-label>Entrar interval de dates</mat-label>
     <mat-date-range-input [formGroup]="rangeDate" [rangePicker]="picker">
       <input
         matStartDate
@@ -38,27 +38,28 @@
       >Invalid end date</mat-error
     >
   </mat-form-field>
-
-  <div class="list">
-    <div id="ingressos">
-      <h1>Ingressos</h1>
-      <p>{{ totalIngres }}€</p>
-      <table>
-        <tr *ngFor="let ingressos of categoryListIngressos">
-          <td>{{ ingressos.category.name }}</td>
-          <td>{{ ingressos.value }}€</td>
-        </tr>
-      </table>
-    </div>
-    <div id="despesses">
-      <h1>Despeses</h1>
-      <p>{{ totalDespesa }}€</p>
-      <table>
-        <tr *ngFor="let despesses of categoryListDespesses">
-          <td>{{ despesses.category.name }}</td>
-          <td>{{ despesses.value }}€</td>
-        </tr>
-      </table>
+  <div class="border">
+    <div class="list">
+      <div id="ingressos">
+        <h1>Ingressos</h1>
+        <p>{{ totalIngres }}€</p>
+        <table>
+          <tr *ngFor="let ingressos of categoryListIngressos">
+            <td>{{ ingressos.category.name }}</td>
+            <td>{{ ingressos.value }}€</td>
+          </tr>
+        </table>
+      </div>
+      <div id="despesses">
+        <h1>Despeses</h1>
+        <p>{{ totalDespesa }}€</p>
+        <table>
+          <tr *ngFor="let despesses of categoryListDespesses">
+            <td>{{ despesses.category.name }}</td>
+            <td>{{ despesses.value }}€</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
