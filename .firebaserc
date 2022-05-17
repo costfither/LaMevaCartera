@@ -1,4 +1,8 @@
 {
+  "projects": {
+    "default": "lamevacartera",
+    "angular": "lamevacartera"
+  },
   "targets": {
     "mafst-e6efe": {
       "hosting": {
@@ -14,8 +18,5 @@
         ]
       }
     }
-  },
-  "projects": {
-    "default": "lamevacartera"
   }
 }
