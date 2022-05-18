@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
     });
 
     this.store.select('userState').subscribe((user) => {
-      user
+      user.usuario
         ? (this.user = user.usuario?.user)
         : this.router.navigateByUrl('/login');
     });
@@ -51,6 +51,16 @@ export class HomeComponent implements OnInit {
       if (transaccio?.transactions) {
         this.transaccionList(transaccio?.transactions);
       }
+      console.log('this.transaccioListIngres');
+      console.log(this.transaccioListIngres);
+      console.log('this.categoryListIngressos');
+      console.log(this.categoryListIngressos);
+
+      console.log('this.transaccioListDespesa');
+      console.log(this.transaccioListDespesa);
+
+      console.log('this.categoryListDespesses');
+      console.log(this.categoryListDespesses);
     });
     this.loadCategories();
     this.loadData();
@@ -71,23 +81,25 @@ export class HomeComponent implements OnInit {
     this.transaccioListIngres = [
       ...transaccioDateRange.filter((value) => value.type === true),
     ];
+
     this.transaccioListDespesa = [
       ...transaccioDateRange.filter((value) => value.type === false),
     ];
     this.totalIngres = this.totalValues(this.transaccioListIngres);
     this.totalDespesa = this.totalValues(this.transaccioListDespesa);
-    this.categoryListIngressos = [
-      ...this.createTransaccioList(this.transaccioListIngres),
-    ];
     this.categoryListDespesses = [
       ...this.createTransaccioList(this.transaccioListDespesa),
+    ];
+
+    this.categoryListIngressos = [
+      ...this.createTransaccioList(this.transaccioListIngres),
     ];
   }
 
   private createTransaccioList(
     transaccioList: data[]
   ): { category: categoria; value: number }[] {
-    let categoryList = this.categoryList.map((category) => {
+    var categoryList = this.categoryList.map((category) => {
       return { category: category, value: 0 };
     });
     transaccioList.forEach((transaccio) => {
