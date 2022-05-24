@@ -1,5 +1,7 @@
+<h1 *ngIf="!isUpdateMode">Afegir categoria</h1>
+<h1 *ngIf="isUpdateMode">Editar categoria</h1>
+
 <form [formGroup]="categoryForm" (submit)="saveCategory()">
-  <h1>Afegir categoria</h1>
   <div>
     <mat-form-field appearance="fill">
       <mat-label for="name">Nom:</mat-label>

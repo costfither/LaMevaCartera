@@ -40,7 +40,9 @@ export class CategoriaAddComponent implements OnInit {
     this.categoria = new categoria();
     this.categoryId = this.categoria.idCategory;
     this.isUpdateMode = false;
-
+    if (this.categoryIdField) {
+      this.isUpdateMode = true;
+    }
     this.name = new FormControl(this.categoria.name, [Validators.required]);
     this.description = new FormControl(this.categoria.description);
     this.color = new FormControl(this.categoria.color, [Validators.required]);
