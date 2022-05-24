@@ -51,16 +51,6 @@ export class HomeComponent implements OnInit {
       if (transaccio?.transactions) {
         this.transaccionList(transaccio?.transactions);
       }
-      console.log('this.transaccioListIngres');
-      console.log(this.transaccioListIngres);
-      console.log('this.categoryListIngressos');
-      console.log(this.categoryListIngressos);
-
-      console.log('this.transaccioListDespesa');
-      console.log(this.transaccioListDespesa);
-
-      console.log('this.categoryListDespesses');
-      console.log(this.categoryListDespesses);
     });
     this.loadCategories();
     this.loadData();
